@@ -30,5 +30,6 @@ module.exports = {
         "asyncArrow": "ignore"
     }],
     "semi": ["error", "always"],
+    "no-labels": 0,
   }
 }

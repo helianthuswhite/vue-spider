@@ -5,7 +5,7 @@
     </el-col>
     <el-col :span="12">
       <el-menu class="el-menu-header-index" :default-active="activeIndex" mode="horizontal">
-        <el-menu-item index="1" >首页</el-menu-item>
+        <el-menu-item index="1"><router-link to="/">首页</router-link></el-menu-item>
         <el-menu-item index="2">爬虫市场</el-menu-item>
         <el-menu-item index="3">了解我们</el-menu-item>
         <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">开源代码</a></el-menu-item>
@@ -15,8 +15,10 @@
       <el-row>
         <el-col :span="12" :offset="8">
           <el-menu class="el-menu-header-login" mode="horizontal">
-        <el-menu-item index="1"><a href="https://www.ele.me" target="_blank">登录</a></el-menu-item>
-        <el-menu-item index="2"><a href="https://www.ele.me" target="_blank">注册</a></el-menu-item>
+        <el-menu-item index="1">
+          <router-link to="/login/login">登录</router-link>
+        </el-menu-item>
+        <el-menu-item index="2"><router-link to="/login/register">注册</router-link></el-menu-item>
       </el-menu>
         </el-col>
       </el-row>
@@ -74,8 +76,16 @@ export default {
         height: 30px;
         line-height: 30px;
         margin-left: 15px;
+        padding: 0;
         &:hover {
           color: rgb(32, 160, 255);
+        }
+        a {
+          display: block;
+          box-sizing: border-box;
+          padding: 0 20px;
+          width: 100%;
+          height: 100%;
         }
       }
     }

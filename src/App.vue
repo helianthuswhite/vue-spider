@@ -12,7 +12,7 @@ export default {
 
 <style lang="less">
   #app {
-    width: 100%;
+    min-width: 1200px;
     height: 100%;
   }
 </style>
