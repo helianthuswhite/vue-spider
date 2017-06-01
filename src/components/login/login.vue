@@ -7,7 +7,7 @@
           <h1 class="title">登录</h1>
           <el-form :model="loginForm" :rules="loginRules" ref="loginForm"  class="login-ruleForm">
             <el-form-item label="用户名：" prop="user">
-              <label class="to-register">没有账号？<router-link to="/login#register">去注册</router-link></label>
+              <label class="to-register">没有账号？<router-link to="/login/register">去注册</router-link></label>
               <el-input type="text" v-model="loginForm.user" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码：" prop="pass">
@@ -109,7 +109,7 @@ export default {
           { required: true, validator: validateRegisterCheckPass, trigger: 'blur' }
         ],
         email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
         ]
       }
@@ -127,15 +127,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          // this.$http.post('/api/user/login')
+          console.log(this.loginForm);
         } else {
           console.log('error submit!!');
           return false;
         }
       });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     }
   }
 };

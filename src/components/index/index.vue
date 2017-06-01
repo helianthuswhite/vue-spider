@@ -4,7 +4,7 @@
     <el-row type="flex" justify="center" align="middle" class="content-wrapper">
       <el-col :span="8">
         <el-row class="content">
-          <el-input placeholder="请输入内容" v-model="searchInput">
+          <el-input placeholder="请输入需要查找的爬虫信息" v-model="searchInput">
             <el-button slot="append">搜索一下</el-button>
           </el-input>
         </el-row>
