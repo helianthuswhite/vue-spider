@@ -6,7 +6,7 @@
     <el-col :span="12">
       <el-menu class="el-menu-header-index" :default-active="activeIndex" mode="horizontal">
         <el-menu-item index="1"><router-link to="/">首页</router-link></el-menu-item>
-        <el-menu-item index="2">爬虫市场</el-menu-item>
+        <el-menu-item index="2"><router-link to="/market">爬虫市场</router-link></el-menu-item>
         <el-menu-item index="3">了解我们</el-menu-item>
         <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">开源代码</a></el-menu-item>
       </el-menu>
