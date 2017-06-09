@@ -54,8 +54,47 @@
           </el-radio-group>
         </div>
       </div>
+      <div class="sort clearfix">
+        <div class="sort-content">
+          综合排序
+          <div class="sort-button">
+            <i class="sort-caret ascending"></i>
+            <i class="sort-caret descending"></i>
+          </div>
+        </div>
+        <div class="sort-content">
+          使用人数
+          <div class="sort-button">
+            <i class="sort-caret ascending"></i>
+            <i class="sort-caret descending"></i>
+          </div>
+        </div>
+        <div class="sort-content">
+          更新时间
+          <div class="sort-button">
+            <i class="sort-caret ascending"></i>
+            <i class="sort-caret descending"></i>
+          </div>
+        </div>
+      </div>
       <div class="result">
-        222
+        <el-row class="result-content">
+          <el-col :span="6" class="result-wrapper">
+            <a href="#" class="result-card">
+              <img src="" class="image">
+              <span class="title">哈哈哈牛逼的API</span>
+              <p class="time-price clearfix">
+                <span class="time">已使用1000次</span>
+                <span class="price">1000次/5元起</span>
+              </p>
+            </a>
+          </el-col>
+          </el-col>
+        </el-row>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="50">
+        </el-pagination>
       </div>
     </div>
     <v-footer></v-footer>
@@ -115,7 +154,6 @@ export default {
       width: 1200px;
       .condition {
         padding: 30px 0;
-        border-bottom: solid 1px #ccc;
         .type {
           position: relative;
           margin: 15px 0;
@@ -139,6 +177,91 @@ export default {
               }
             }
           } 
+        }
+      }
+      .sort {
+        border: solid 1px #ccc;
+        .sort-content {
+          position: relative;
+          float: left;
+          padding: 15px 20px;
+          border-right: solid 1px #ccc;
+          .sort-button {
+            display: inline-block;
+            .sort-caret {
+              position: absolute;
+              display: inline-block;
+              width: 0;
+              height: 0;
+              border: 0;
+              content: "";
+              border-right: 5px solid transparent;
+              border-left: 5px solid transparent;
+              &.descending {
+                bottom: 17px;
+                border-bottom: none;
+                border-top: 5px solid #97a8be;
+              }
+              &.ascending {
+                top: 17px;
+                border-top: none;
+                border-bottom: 5px solid #97a8be;
+              }
+            }
+          }
+        }
+      }
+      .result {
+        .result-content {
+          .result-wrapper {
+            padding: 15px;
+            &:first-child {
+              padding-left: 0;
+            }
+            &:last-child {
+              padding-right: 0;
+            }
+            .result-card {
+              display: block;
+              color: #000;
+              border: solid 1px #ccc; 
+              &:hover {
+                .title {
+                  color: #20a0ff;
+                  text-decoration: underline;
+                }
+                border: solid 1px #20a0ff;
+              }
+              .image {
+                width: 100%;
+                height: 170px;
+              }
+              .title {
+                display: block;
+                text-align: center;
+                line-height: 30px;
+              }
+              .time-price {
+                line-height: 50px;
+                background: #f0f0f0;
+                color: #7e8c8d;
+                font-size: 14px;
+                .time {
+                  margin-left: 15px;
+                  float: left;
+                }
+                .price {
+                  margin-right: 15px;
+                  float: right;
+                  color: #f00;
+                }
+              }
+            }
+          }
+        }
+        .el-pagination {
+          text-align: center;
+          margin: 50px auto;
         }
       }
     }
