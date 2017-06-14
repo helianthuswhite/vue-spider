@@ -7,8 +7,8 @@
       <el-menu class="el-menu-header-index" :default-active="activeIndex" mode="horizontal">
         <el-menu-item index="1"><router-link to="/">首页</router-link></el-menu-item>
         <el-menu-item index="2"><router-link to="/market">爬虫市场</router-link></el-menu-item>
-        <el-menu-item index="3">了解我们</el-menu-item>
-        <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">开源代码</a></el-menu-item>
+        <el-menu-item index="3"><router-link to="/aboutUs">了解我们</router-link></el-menu-item>
+        <el-menu-item index="4"><router-link to="/openSource">开源代码</router-link></el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="6">
