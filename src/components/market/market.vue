@@ -1,43 +1,26 @@
 <template>
   <div class="market">
-    <marketHeader></marketHeader>
+    <marketHeader :searchInput="searchInput"></marketHeader>
     <div class="market-wrapper">
       <div class="condition clearfix">
         <div class="type clearfix">
           <div class="title">价格</div>
-          <el-radio-group v-model="radio3">
-            <el-radio-button label="上海"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
-            <el-radio-button label="上海"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
+          <el-radio-group v-model="radioPrice">
+            <el-radio-button label="免费"></el-radio-button>
+            <el-radio-button label="收费"></el-radio-button>
           </el-radio-group>
         </div>
         <div class="type">
           <div class="title">关键字</div>
-          <el-radio-group v-model="radio3">
-            <el-radio-button label="上海"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
-            <el-radio-button label="上海"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
-            <el-radio-button label="上海"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="北京"></el-radio-button>
-            <el-radio-button label="广州"></el-radio-button>
-            <el-radio-button label="深圳"></el-radio-button>
+          <el-radio-group v-model="radioPrimary">
+            <el-radio-button label="微信"></el-radio-button>
+            <el-radio-button label="淘宝"></el-radio-button>
+            <el-radio-button label="图片"></el-radio-button>
+            <el-radio-button label="广告"></el-radio-button>
+            <el-radio-button label="美女"></el-radio-button>
+            <el-radio-button label="小说"></el-radio-button>
+            <el-radio-button label="电影"></el-radio-button>
+            <el-radio-button label="评论"></el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -99,8 +82,13 @@ export default {
   },
   data() {
     return {
-      radio3: '上海'
+      radioPrice: '免费',
+      radioPrimary: '微信',
+      searchInput: ''
     };
+  },
+  created() {
+    this.searchInput = this.$route.params.searchInput;
   }
 };
 </script>

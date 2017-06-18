@@ -5,7 +5,7 @@
       <el-col :span="8">
         <el-row class="content">
           <el-input placeholder="请输入需要查找的爬虫信息" v-model="searchInput">
-            <el-button slot="append">搜索一下</el-button>
+            <el-button slot="append" @click="search">搜索一下</el-button>
           </el-input>
         </el-row>
       </el-col>
@@ -28,8 +28,14 @@ export default {
       searchInput: ''
     };
   },
-  created() {
-    // this.$http.get('/')
+  methods: {
+    search() {
+      this.$http.get('/spiders').then(response => {
+        if (response.body.ok === 0) {
+          this.$router.push({ name: 'market', params: { searchInput: this.searchInput } });
+        }
+      });
+    }
   }
 };
 </script>

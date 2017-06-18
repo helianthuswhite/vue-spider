@@ -164,19 +164,11 @@ export default {
     };
   },
   created() {
-    // this.$http.get('/spiders?id=1').then(response => {
-    //   if (response.body) {
-    //     this.spiderDetail = response.body;
-    //   } else {
-    //     this.spiderDetail = {
-    //       'id': '1',
-    //       'title': '爬虫TITLE',
-    //       'description': '这是一条爬虫的描述，我觉得应该长一点这样会比较好很多，反正先试一试，有点蛋疼',
-    //       'query': '查个奶子',
-    //       'intervalTime': '10000'
-    //     };
-    //   }
-    // });
+    this.$http.get('/spiders?id=1').then(response => {
+      if (response.body) {
+        this.spiderDetail = response.body;
+      }
+    });
   },
   methods: {
     submitForm() {
