@@ -19,9 +19,6 @@
         </h4>
         <div class="content spider-config">
           <el-form :model="spiderConfigForm" ref="spiderConfigForm" class="spider-config-form">
-            <el-form-item label="accessToken：" prop="accessToken">
-              <el-input type="text" v-model="spiderConfigForm.accessToken" auto-complete="off"></el-input>
-            </el-form-item>
             <el-form-item label="查询内容：" prop="query">
               <el-input type="text" v-model="spiderConfigForm.query" auto-complete="off"></el-input>
             </el-form-item>
@@ -126,7 +123,6 @@ export default {
         'intervalTime': '间隔时间'
       },
       spiderConfigForm: {
-        'accessToken': this.accessToken,
         'query': '',
         'intervalTime': ''
       },
