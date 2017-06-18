@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <v-header activeIndex="/"></v-header>
+    <v-header activeIndex="/" :isLogin="showConsole"></v-header>
     <el-row type="flex" justify="center" align="middle" class="content-wrapper">
       <el-col :span="8">
         <el-row class="content">
@@ -25,14 +25,26 @@ export default {
   },
   data() {
     return {
-      searchInput: ''
+      searchInput: '',
+      showConsole: false
     };
+  },
+  created() {
+    if (this.$route.params.length > 0) {
+      this.showConsole = this.$router.params.isLogin;
+    }
   },
   methods: {
     search() {
-      this.$http.get('/spiders').then(response => {
+      this.$http.get(`/api/spiders?title=${this.searchInput}`).then(response => {
         if (response.body.ok === 0) {
-          this.$router.push({ name: 'market', params: { searchInput: this.searchInput } });
+          this.$router.push({
+            name: 'market',
+            params: {
+              searchInput: this.searchInput,
+              searchData: response.body.body
+            }
+          });
         }
       });
     }

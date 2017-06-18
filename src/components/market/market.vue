@@ -1,18 +1,35 @@
 <template>
   <div class="market">
-    <marketHeader :searchInput="searchInput"></marketHeader>
+    <div class="market-header">
+      <v-header activeIndex="/market"></v-header>
+      <el-row type="flex" justify="center" align="middle" class="search-wrapper">
+        <el-col :span="4">
+          <span class="logo">Spider 🕷</span>
+          <span class="text">一站式爬虫云市场</span>
+        </el-col>
+        <el-col :span="8" :offset="1">
+          <el-row class="content">
+            <el-input placeholder="请输入需要查找的爬虫信息" v-model="searchInput">
+              <el-button slot="append" @click="search">搜索一下</el-button>
+            </el-input>
+          </el-row>
+        </el-col>
+      </el-row>
+    </div>
     <div class="market-wrapper">
       <div class="condition clearfix">
         <div class="type clearfix">
           <div class="title">价格</div>
           <el-radio-group v-model="radioPrice">
+            <el-radio-button label="全部"></el-radio-button>
             <el-radio-button label="免费"></el-radio-button>
             <el-radio-button label="收费"></el-radio-button>
           </el-radio-group>
         </div>
         <div class="type">
           <div class="title">关键字</div>
-          <el-radio-group v-model="radioPrimary">
+          <el-radio-group v-model="radioPrimary" @change="handleRadio">
+            <el-radio-button label="全部"></el-radio-button>
             <el-radio-button label="微信"></el-radio-button>
             <el-radio-button label="淘宝"></el-radio-button>
             <el-radio-button label="图片"></el-radio-button>
@@ -49,13 +66,13 @@
       </div>
       <div class="result">
         <el-row class="result-content">
-          <el-col :span="6" class="result-wrapper">
+          <el-col :span="6" class="result-wrapper"  v-for="item in searchData">
             <router-link to="/apidetail" class="result-card">
-              <img src="" class="image">
-              <span class="title">哈哈哈牛逼的API</span>
+              <img src="./img/no-image.png" class="image">
+              <span class="title">{{ item.title }}</span>
               <p class="time-price clearfix">
-                <span class="time">已使用1000次</span>
-                <span class="price">1000次/5元起</span>
+                <span class="time">已使用0次</span>
+                <span class="price">免费</span>
               </p>
             </router-link>
           </el-col>
@@ -72,23 +89,53 @@
 </template>
 
 <script>
-import marketHeader from './marketHeader';
+import header from '../header/header';
 import footer from '../footer/footer';
 
 export default {
   components: {
-    marketHeader,
+    'v-header': header,
     'v-footer': footer
   },
   data() {
     return {
-      radioPrice: '免费',
-      radioPrimary: '微信',
-      searchInput: ''
+      radioPrice: '全部',
+      radioPrimary: '全部',
+      searchInput: '',
+      searchData: ''
     };
   },
   created() {
     this.searchInput = this.$route.params.searchInput;
+    this.searchData = this.$route.params.searchData;
+  },
+  methods: {
+    handleRadio() {
+      if (this.radioPrimary !== '全部') {
+        this.searchInput = this.radioPrimary;
+      }
+      this.$http.get(`/api/spiders?title=${this.radioPrimary}`).then(response => {
+        if (response.body.ok === 0) {
+          this.searchData = response.body.body;
+        }
+      }, response => {
+        this.$message.error('服务器出错！');
+      });
+    },
+    search() {
+      this.$http.get(`/api/spiders?title=${this.searchInput}`).then(response => {
+        if (response.body.ok === 0) {
+          console.log(response.body);
+          this.$router.push({
+            name: 'market',
+            params: {
+              searchInput: this.searchInput,
+              searchData: this.searchData
+            }
+          });
+        }
+      });
+    }
   }
 };
 </script>
@@ -97,6 +144,35 @@ export default {
   .market {
     position: relative;
     z-index: 1;
+    .market-header {
+      position: relative;
+      z-index: 1;
+      .search-wrapper {
+        z-index: -10;
+        padding: 60px 0;
+        border: solid 1px #ccc;
+        .logo {
+          display: block;
+          text-shadow: 5px 5px 0px #ccc;
+          color: #000;
+          text-align: center;
+          margin-bottom: 10px;
+          font-weight: 700;
+          font-size: 50px;
+        }
+        .text {
+          display: block;
+          text-align: center;
+          color: #7e8c8d;
+        } 
+        .content {
+          .el-input-group__append {
+            color: #fff;
+            background: rgb(32, 160, 255);
+          }
+        }
+      }
+    }
     .market-wrapper {
       position: relative;
       margin: 0 auto;
@@ -183,7 +259,7 @@ export default {
               }
               .image {
                 width: 100%;
-                height: 170px;
+                height: 230px;
               }
               .title {
                 display: block;

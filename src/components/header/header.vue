@@ -37,23 +37,26 @@ export default {
   props: ['activeIndex'],
   data() {
     return {
-      isLogin: true
     };
+  },
+  created() {
+    this.isLogin = true;
   },
   methods: {
     handleSelect(key) {
       window.location.href = `#${key}`;
     },
     logout() {
-      this.$http.post('/user/logout').then(response => {
-        if (response.body.ok === 0) {
-          window.location.href = '/';
-          this.message({
-            message: '退出成功!',
-            type: 'success'
-          });
-        }
-      });
+      this.isLogin = false;
+      // this.$http.post('/user/logout').then(response => {
+      //   if (response.body.ok === 0) {
+      //     window.location.href = '/';
+      //     this.message({
+      //       message: '退出成功!',
+      //       type: 'success'
+      //     });
+      //   }
+      // });
     }
   }
 };
@@ -62,7 +65,7 @@ export default {
 <style lang="less">
   .header {
     height: 60px;
-    z-index: 9999;
+    z-index: 10;
     background: rgb(32, 160, 255);
     .logo {
       margin-left: 30px;

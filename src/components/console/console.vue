@@ -26,7 +26,7 @@
               <el-input type="text" v-model="spiderConfigForm.query" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="间隔时间：" prop="intervalTime">
-              <el-input type="password" v-model="spiderConfigForm.intervalTime" auto-complete="off"></el-input>
+              <el-input type="text" v-model="spiderConfigForm.intervalTime" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm()" class="submit">新建实例</el-button>
@@ -50,49 +50,46 @@
               :data="spiderData"
               border
               style="width: 100%"
-              :default-sort = "{prop: 'id', order: 'descending'}">
+              :default-sort = "{prop: 'publishTime', order: 'descending'}">
               <el-table-column type="expand">
                 <template scope="props">
                   <el-form label-position="left" inline class="demo-table-expand">
-                    <el-form-item label="商品名称">
-                      <span>{{ props.row.name }}</span>
+                    <el-form-item label="名称">
+                      <span>{{ props.row.title }}</span>
                     </el-form-item>
-                    <el-form-item label="所属店铺">
-                      <span>{{ props.row.shop }}</span>
+                    <el-form-item label="时间">
+                      <span>{{ props.row.publishTime }}</span>
                     </el-form-item>
-                    <el-form-item label="商品 ID">
-                      <span>{{ props.row.id }}</span>
+                    <el-form-item label="作者">
+                      <span>{{ props.row.authorname }}</span>
                     </el-form-item>
-                    <el-form-item label="店铺 ID">
-                      <span>{{ props.row.shopId }}</span>
+                    <el-form-item label="作者链接">
+                      <span>{{ props.row.authorhref }}</span>
                     </el-form-item>
-                    <el-form-item label="商品分类">
-                      <span>{{ props.row.category }}</span>
+                    <el-form-item label="文章链接">
+                      <span>{{ props.row.href }}</span>
                     </el-form-item>
-                    <el-form-item label="店铺地址">
-                      <span>{{ props.row.address }}</span>
-                    </el-form-item>
-                    <el-form-item label="商品描述">
-                      <span>{{ props.row.desc }}</span>
+                    <el-form-item label="内容">
+                      <span>{{ props.row.txtInfo }}</span>
                     </el-form-item>
                   </el-form>
                 </template>
               </el-table-column>
               <el-table-column
-                label="商品 ID"
-                prop="id">
+                label="标题"
+                prop="title">
               </el-table-column>
               <el-table-column
-                label="商品名称"
-                prop="name">
+                label="时间"
+                prop="publishTime">
               </el-table-column>
               <el-table-column
-                label="描述"
-                prop="desc">
+                label="作者"
+                prop="authorname">
               </el-table-column>
             </el-table>
             <div class="export">
-              <el-button type="primary">导出JSON</el-button>
+              <el-button type="primary" @click="exportData">导出JSON</el-button>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -144,37 +141,31 @@ export default {
         allData: '全部数据',
         lastestData: '最新数据'
       },
-      spiderData: [{
-        id: '12987122',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987123',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }]
+      spiderData: []
     };
   },
   created() {
-    this.$http.get('/spiders?id=1').then(response => {
-      if (response.body) {
-        this.spiderDetail = response.body;
+    this.$http.get('/api/spiders?id=1').then(response => {
+      if (response.body.ok === 0) {
+        this.spiderDetail = {
+          'id': response.body.body[0].id,
+          'title': response.body.body[0].title,
+          'description': response.body.body[0].description,
+          'query': response.body.body[0].defaultspiderconfig.query,
+          'intervalTime': response.body.body[0].defaultspiderconfig.intervalTime
+        };
       }
     });
   },
   methods: {
     submitForm() {
-      this.$http.post('/spiderInstance', {
-        'query': this.spiderConfigForm.query,
-        'intervalTime': this.spiderConfigForm.intervalTime
+      this.$http.post('/api/spiderInstance', {
+        'userId': '1',
+        'spiderId': '1',
+        'spiderConfig': {
+          'query': this.spiderConfigForm.query,
+          'intervalTime': this.spiderConfigForm.intervalTime
+        }
       }).then(response => {
         if (response.body.ok === 0) {
           this.$message({
@@ -183,13 +174,14 @@ export default {
           });
           this.spiderDetail.query = this.spiderConfigForm.query;
           this.spiderDetail.intervalTime = this.spiderConfigForm.intervalTime;
+          this.accessToken = response.body.body;
         } else {
           this.$message.error('操作失败！');
         }
       });
     },
     operate(status) {
-      this.$http.post('spiderInstances/status', {
+      this.$http.post('/api/spiderInstances/status', {
         'accessToken': this.accessToken,
         'action': status
       }).then(response => {
@@ -198,6 +190,7 @@ export default {
             message: '操作成功！',
             type: 'success'
           });
+          this.changeData();
         } else {
           this.$message.error('操作失败！');
         }
@@ -205,12 +198,26 @@ export default {
     },
     changeData() {
       if (this.currentDataTab === 'allData') {
-        this.$http.get(`/resources?accessToken=${this.accessToken}`).then(response => {
-          if (response) {
+        this.$http.get(`/api/resources?accessToken=${this.accessToken}`).then(response => {
+          if (response.body.ok === 0) {
+            this.spiderData = response.body.body;
+          } else {
+            this.$message({
+              message: '服务器响应中，请稍后...',
+              type: 'warning'
+            });
+          }
+        });
+      } else {
+        this.$http.get(`/api/resources/recent?accessToken=${this.accessToken}`).then(response => {
+          if (response.body.ok === 0) {
+            this.spiderData = response.body.body;
           }
         });
       }
-      console.log(this.currentDataTab);
+    },
+    exportData() {
+      window.location.href = `/api/resources/jsonfile?accessToken=${this.accessToken}`;
     }
   }
 };

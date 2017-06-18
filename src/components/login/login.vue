@@ -129,23 +129,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$http.post(`/user/${this[formName].name}`, {
-            'username': this[formName].user,
-            'password': this[formName].pass
-          }).then(response => {
-            if (response.body.ok === 0) {
-              if (formName === 'registerForm') {
-                this.$message({
-                  message: '注册成功！',
-                  type: 'success'
-                });
-              } else {
-                window.location.href = '#/';
-              }
-            } else {
-              this.$message.error('操作失败！');
-            }
-          });
+          if (formName === 'registerForm') {
+            window.location.href = '#/';
+          } else {
+            this.$router.push({ name: 'index', params: { isLogin: true } });
+          }
+          // this.$http.post(`/user/${this[formName].name}`, {
+          //   'username': this[formName].user,
+          //   'password': this[formName].pass
+          // }).then(response => {
+          //   if (response.body.ok === 0) {
+          //     if (formName === 'registerForm') {
+          //       this.$message({
+          //         message: '注册成功！',
+          //         type: 'success'
+          //       });
+          //     } else {
+          //       window.location.href = '#/';
+          //     }
+          //   } else {
+          //     this.$message.error('操作失败！');
+          //   }
+          // });
         } else {
           return false;
         }

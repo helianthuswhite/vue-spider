@@ -1,20 +1,20 @@
 <template>
   <div class="api-detail">
-    <marketHeader></marketHeader>
+    <v-header></v-header>
     <div class="api-detail-wrapper">
       <div class="summary clearfix">
         <div class="api-card">
           <img src="" class="image">
           <p class="time-price clearfix">
-            <span class="time">已使用1000次</span>
-            <span class="price">1000次/5元起</span>
+            <span class="time">已使用0次</span>
+            <span class="price">免费</span>
           </p>
         </div>
         <div class="api-info">
-          <h2 class="title">牛逼闪闪的API</h2>
+          <h2 class="title">WxapiSpider</h2>
           <div class="price">
             价格：
-            <span class="text">￥5元</span> 起
+            <span class="text">免费</span> 起
             <a href="#" class="buy">购买API套餐</a>
           </div>
           <div class="info">
@@ -33,7 +33,7 @@
               <a href="helianthuswhite.cn" class="get-apikey">获取apikey</a>
             </div>
             <div class="row intro">
-              <span class="intro-title">服务简介：</span>这就是简介，非常非常牛逼的简介，我说这很牛逼你在还不信呢，你不信算了，反正就是这么牛逼，不想跟你说了，我还要撸代码呢。
+              <span class="intro-title">服务简介：</span>
             </div>
           </div>
         </div>
@@ -236,12 +236,12 @@
 </template>
 
 <script>
-import marketHeader from './marketHeader';
+import header from '../header/header';
 import footer from '../footer/footer';
 
 export default {
   components: {
-    marketHeader,
+    'v-header': header,
     'v-footer': footer
   },
   data() {
