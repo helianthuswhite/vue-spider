@@ -1,6 +1,6 @@
 <template>
   <div class="aboutUs">
-    <v-header></v-header>
+    <v-header activeIndex="/aboutUs"></v-header>
     <el-row type="flex" justify="center" align="middle" class="content-wrapper">
       <el-col :span="12">
         <el-row class="content">

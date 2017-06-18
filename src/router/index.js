@@ -6,6 +6,7 @@ import market from '@/components/market/market';
 import apidetail from '@/components/market/apidetail';
 import aboutUs from '@/components/aboutUs/aboutUs';
 import openSource from '@/components/openSource/openSource';
+import console from '@/components/console/console';
 
 Vue.use(Router);
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/openSource',
       name: 'openSource',
       component: openSource
+    },
+    {
+      path: '/console',
+      name: 'console',
+      component: console
     }
   ]
 });

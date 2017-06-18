@@ -4,22 +4,28 @@
       <span class="logo">Spider</span>
     </el-col>
     <el-col :span="12">
-      <el-menu class="el-menu-header-index" :default-active="activeIndex" mode="horizontal">
-        <el-menu-item index="1"><router-link to="/">首页</router-link></el-menu-item>
-        <el-menu-item index="2"><router-link to="/market">爬虫市场</router-link></el-menu-item>
-        <el-menu-item index="3"><router-link to="/aboutUs">了解我们</router-link></el-menu-item>
-        <el-menu-item index="4"><router-link to="/openSource">开源代码</router-link></el-menu-item>
+      <el-menu class="el-menu-header-index" :default-active="activeIndex" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/market">爬虫市场</el-menu-item>
+        <el-menu-item index="/aboutUs">了解我们</el-menu-item>
+        <el-menu-item index="/openSource">开源代码</el-menu-item>
       </el-menu>
     </el-col>
     <el-col :span="6">
       <el-row>
         <el-col :span="12" :offset="8">
-          <el-menu class="el-menu-header-login" mode="horizontal">
-        <el-menu-item index="1">
-          <router-link to="/login/login">登录</router-link>
-        </el-menu-item>
-        <el-menu-item index="2"><router-link to="/login/register">注册</router-link></el-menu-item>
-      </el-menu>
+          <el-menu class="el-menu-header-login" mode="horizontal" v-if="!isLogin">
+            <el-menu-item index="6">
+              <router-link to="/login/login">登录</router-link>
+            </el-menu-item>
+            <el-menu-item index="7"><router-link to="/login/register">注册</router-link></el-menu-item>
+          </el-menu>
+          <el-menu class="el-menu-header-login" mode="horizontal" v-else>
+            <el-menu-item index="6">
+              <router-link to="/console">控制台</router-link>
+            </el-menu-item>
+            <el-menu-item index="7"><a href="javascript:void(0);" @click="logout">退出</a></el-menu-item>
+          </el-menu>
         </el-col>
       </el-row>
     </el-col>
@@ -28,10 +34,27 @@
 
 <script>
 export default {
+  props: ['activeIndex'],
   data() {
     return {
-      activeIndex: '1'
+      isLogin: true
     };
+  },
+  methods: {
+    handleSelect(key) {
+      window.location.href = `#${key}`;
+    },
+    logout() {
+      this.$http.post('/user/logout').then(response => {
+        if (response.body.ok === 0) {
+          window.location.href = '/';
+          this.message({
+            message: '退出成功!',
+            type: 'success'
+          });
+        }
+      });
+    }
   }
 };
 </script>
@@ -39,6 +62,7 @@ export default {
 <style lang="less">
   .header {
     height: 60px;
+    z-index: 9999;
     background: rgb(32, 160, 255);
     .logo {
       margin-left: 30px;
@@ -50,6 +74,7 @@ export default {
     .el-menu-header-index {
       background: rgb(32, 160, 255);
       .el-menu-item {
+        box-sizing: border-box;
         color: #fff;
         opacity: 0.8;
         &.is-active {

@@ -11,7 +11,7 @@
               <el-input type="text" v-model="loginForm.user" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码：" prop="pass">
-              <label class="forget-pass"><a href="#">忘记密码</a></label>
+              <label class="forget-pass"><a href="javascript:void(0);">忘记密码</a></label>
               <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item>
@@ -38,7 +38,7 @@
               <el-input type="text" v-model="registerForm.email" auto-complete="off" placeholder="请输入您的邮箱账号"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('loginForm')" class="submit">注册</el-button>
+              <el-button type="primary" @click="submitForm('registerForm')" class="submit">注册</el-button>
               <label class="tologin">已有账号？<router-link to="/login/login">直接登录>></router-link></label>
             </el-form-item>
           </el-form>
@@ -81,6 +81,7 @@ export default {
     return {
       remember: false,
       loginForm: {
+        name: 'login',
         user: '',
         pass: ''
       },
@@ -93,6 +94,7 @@ export default {
         ]
       },
       registerForm: {
+        name: 'register',
         user: '',
         pass: '',
         checkPass: '',
@@ -127,10 +129,24 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // this.$http.post('/api/user/login')
-          console.log(this.loginForm);
+          this.$http.post(`/user/${this[formName].name}`, {
+            'username': this[formName].user,
+            'password': this[formName].pass
+          }).then(response => {
+            if (response.body.ok === 0) {
+              if (formName === 'registerForm') {
+                this.$message({
+                  message: '注册成功！',
+                  type: 'success'
+                });
+              } else {
+                window.location.href = '#/';
+              }
+            } else {
+              this.$message.error('操作失败！');
+            }
+          });
         } else {
-          console.log('error submit!!');
           return false;
         }
       });

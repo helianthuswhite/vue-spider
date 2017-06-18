@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <v-header></v-header>
+    <v-header activeIndex="/"></v-header>
     <el-row type="flex" justify="center" align="middle" class="content-wrapper">
       <el-col :span="8">
         <el-row class="content">
@@ -27,6 +27,9 @@ export default {
     return {
       searchInput: ''
     };
+  },
+  created() {
+    // this.$http.get('/')
   }
 };
 </script>
